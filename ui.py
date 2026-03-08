@@ -21,6 +21,8 @@ STATE_FILE = RUNTIME / "state.json"
 CONFIG_FILE = RUNTIME / "config.json"
 LOG_FILE = RUNTIME / "xray.log"
 XRAY_DIR = ROOT / "bin"
+LICENSE_FILE = ROOT / "LICENSE"
+NOTICE_FILE = ROOT / "NOTICE"
 
 DEFAULTS = {
     "lan_ip": "",
@@ -364,6 +366,24 @@ def show_status(s: dict) -> None:
     print(f"DNS        : {s['lan_ip']}:{s['dns_port']}")
 
 
+def show_legal_notice() -> None:
+    print("License: MIT")
+    print("Copyright (c) 2026 contributors")
+    print("Third-party: Xray-core is downloaded from upstream and uses its own license.")
+    print()
+    if NOTICE_FILE.exists():
+        print("--- NOTICE ---")
+        print(NOTICE_FILE.read_text(encoding="utf-8", errors="replace").strip())
+        print()
+    if LICENSE_FILE.exists():
+        print("--- LICENSE (summary) ---")
+        lines = LICENSE_FILE.read_text(encoding="utf-8", errors="replace").splitlines()
+        for line in lines[:18]:
+            print(line)
+        if len(lines) > 18:
+            print("...")
+
+
 def menu() -> None:
     s = load_state()
     while True:
@@ -371,6 +391,9 @@ def menu() -> None:
         print("LAN Share Manager (Cross-Platform)")
         print("----------------------------------")
         show_status(s)
+        print()
+        print("License: MIT | Copyright (c) 2026 contributors")
+        print("Xray-core is third-party software and follows its upstream license.")
         print()
         print("1) Restart share")
         print("2) Start share")
@@ -381,8 +404,9 @@ def menu() -> None:
         print("7) Show log tail")
         print("8) Change LAN IP")
         print("9) Download/Update Xray")
+        print("10) About / License")
         print("0) Exit")
-        choice = input("Select [0-9]: ").strip()
+        choice = input("Select [0-10]: ").strip()
 
         if choice == "1":
             restart_service(s)
@@ -410,6 +434,8 @@ def menu() -> None:
         elif choice == "9":
             p = fetch_latest_xray_binary()
             print(f"Xray ready at: {p}")
+        elif choice == "10":
+            show_legal_notice()
         elif choice == "0":
             return
         else:

@@ -60,3 +60,9 @@ Use only one mode per device.
 
 ## License
 MIT (see `LICENSE`)
+
+## Legal Notice
+- Copyright: 2026 contributors
+- This project code is MIT licensed.
+- Xray-core is third-party software and follows its own upstream license terms.
+- See `NOTICE` for concise attribution notes.
